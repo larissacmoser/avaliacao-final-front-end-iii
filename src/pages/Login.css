@@ -1,0 +1,27 @@
+* {
+  margin: 0px;
+  padding: 0px;
+}
+#bg-movement {
+  background-color: #ffd786;
+  animation: bg-move 8s infinite;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@keyframes bg-move {
+  0% {
+    background-color: #ffd786;
+  }
+  25% {
+    background-color: #f32364;
+  }
+  75% {
+    background-color: #4ed590;
+  }
+  100% {
+    background-color: #ffd786;
+  }
+}
