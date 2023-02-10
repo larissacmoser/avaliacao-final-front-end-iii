@@ -3,6 +3,7 @@ import React, { useCallback, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import BasicCard from "../components/BasicCard";
 import ListType from "../types/ListType";
+import { apiPost } from "../api";
 
 const CriarConta: React.FC = () => {
   const [list, setList] = useState<ListType[]>([]);
@@ -21,21 +22,7 @@ const CriarConta: React.FC = () => {
     },
     [list]
   );
-  const handleClick = () => {
-    const users = JSON.parse(localStorage.getItem("users") || "[]");
-    if (
-      users.length > 0 &&
-      users.some((user: ListType) => user.email === email)
-    ) {
-      alert("E-mail já cadastrado");
-      return;
-    }
-    localStorage.setItem(
-      "users",
-      JSON.stringify([...users, { email, password, notes }])
-    );
-    alert("Conta criada com sucesso!");
-    navigate("/");
+  const handleClick = async () => {
     if (inputPassword === inputPasswordTwo) {
       alert("Confira a senha");
       return;
@@ -53,14 +40,11 @@ const CriarConta: React.FC = () => {
       return alert("Senhas não conferem!");
     }
 
-    if (inputEmail.current && inputPassword.current) {
-      addContact({
-        email: `${inputEmail}
-        `,
-        password: `${inputPassword}`,
-        notes: [],
-      });
-      return;
+    try {
+      await apiPost("/", { email, password });
+      navigate("/");
+    } catch (error) {
+      console.log(error);
     }
   };
   const handleChangePage = () => {

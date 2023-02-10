@@ -12,6 +12,7 @@ import {
 } from "@mui/material";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { apiGet } from "../api";
 import FormNote from "../components/FormNote";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { logoff } from "../store/modules/LoginSlice";
@@ -27,18 +28,28 @@ import { NoteType } from "../types";
 const PaginaRecados: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  let [notes, setNotes] = useState<any>([]);
   useEffect(() => {
-    let userlogged = JSON.parse(localStorage.getItem("userlogged") || "");
-    let users = JSON.parse(localStorage.getItem("users") || "[]");
-
-    let indexUserLogged = users.findIndex((user: any) => {
-      return user.email == userlogged;
-    });
-    let loggedUserNotes = users[indexUserLogged].notes;
-
-    dispatch(setNotes(loggedUserNotes));
+    let userId = JSON.parse(localStorage.getItem("userId") || "");
+    async function getNotesById() {
+      try {
+        let notes = await apiGet(`/${userId}/notes`);
+        return notes;
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    let notes = getNotesById();
+    if (notes) {
+      setNotes(notes);
+    }
   });
 
+  function renderNotes() {
+    notes.map((note: any) => {
+      return note;
+    });
+  }
   const handleAddNote = useCallback((note: NoteType) => {
     dispatch(addNote(note));
   }, []);
@@ -72,6 +83,7 @@ const PaginaRecados: React.FC = () => {
           </Button>
         </Grid>
       </Card>
+      {renderNotes()}
     </>
   );
 };

@@ -1,6 +1,7 @@
 import { Button, ButtonGroup, CardContent, TextField } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { apiPost } from "../api";
 import BasicCard from "../components/BasicCard";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { login } from "../store/modules/LoginSlice";
@@ -19,13 +20,24 @@ const Login: React.FC = () => {
     navigate("/pagina-recados");
   }
 
-  const handleLogin = () => {
-    userslist.forEach((user: any) => {
-      if (user.email === email && user.password === password) {
-        dispatch(login({ email, password, logged: true }));
-        localStorage.setItem("userlogged", JSON.stringify(email));
+  const handleLogin = async () => {
+    try {
+      if (!email || !password) {
+        alert(`Preencha os campos!`);
+        return;
       }
-    });
+      if (password.length < 5) {
+        alert("A senha precisa ter pelo menos 5 caracteres");
+        return;
+      }
+      let { data } = await apiPost("/login", { email, password });
+
+      let userId = data.id;
+      localStorage.setItem("userId", userId);
+      navigate("/pagina-recados");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleChangePage = () => {
