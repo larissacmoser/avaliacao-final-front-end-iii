@@ -66,7 +66,7 @@ const FormNote: React.FC<FormNoteProps> = ({ action }) => {
       alert("Por favor, escreva o recado");
       return;
     }
-    action({ description, detailing });
+
     let findLoggedUser = users.find((user: any) => {
       return user.email == userlogged;
     });
@@ -82,10 +82,7 @@ const FormNote: React.FC<FormNoteProps> = ({ action }) => {
     dispatch(
       updateNote({
         id: note.getId,
-        changes: {
-          description: note.newDescription,
-          detailing: note.newDetailing,
-        },
+        changes: {},
       })
     );
     setOpenEdit(false);
@@ -151,14 +148,7 @@ const FormNote: React.FC<FormNoteProps> = ({ action }) => {
           <Button onClick={handleClear}>Limpar</Button>
         </ButtonGroup>
         {NotesRedux.map((item) => {
-          return (
-            <Note
-              key={item.id}
-              note={item}
-              actionDelete={() => handleDeleteNote(item)}
-              actionEdit={() => setOpenModal(item)}
-            />
-          );
+          return <Note key={item.id} note={item} />;
         })}
         <Dialog open={openEdit} onClose={handleClose}>
           <DialogTitle>EDITAR</DialogTitle>

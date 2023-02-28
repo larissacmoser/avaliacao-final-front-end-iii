@@ -11,16 +11,14 @@ import { Grid, Typography, ListItem } from "@mui/material";
 import NoteType from "../types/NoteType";
 interface NoteProps {
   note: NoteType;
-  actionDelete: (note: NoteType) => void;
-  actionEdit: (note: NoteType) => void;
 }
 
-const Note: React.FC<NoteProps> = ({ note, actionDelete, actionEdit }) => {
+const Note: React.FC<NoteProps> = ({ note }) => {
   return (
     <>
       <Grid item xs={12} md={6}>
         <Typography variant="h6" component="div">
-          {note.description}
+          {note._description}
         </Typography>
         <ThemeProvider theme={theme}>
           <Box
@@ -34,17 +32,13 @@ const Note: React.FC<NoteProps> = ({ note, actionDelete, actionEdit }) => {
               sx={{ fontSize: "14px", marginRight: "80px" }}
               component="div"
             >
-              {note.detailing}
+              {note._detailing}
             </Typography>
             <ListItem
               alignItems="flex-start"
               secondaryAction={
                 <Tooltip title="Excluir recado">
-                  <IconButton
-                    onClick={() => actionDelete(note)}
-                    edge="end"
-                    aria-label="delete"
-                  >
+                  <IconButton edge="end" aria-label="delete">
                     <DeleteIcon
                       sx={{ color: `${theme.palette.secondary.light}` }}
                     />
@@ -54,7 +48,7 @@ const Note: React.FC<NoteProps> = ({ note, actionDelete, actionEdit }) => {
             ></ListItem>
 
             <Tooltip title="Editar recado">
-              <IconButton onClick={() => actionEdit(note)}>
+              <IconButton>
                 <EditIcon sx={{ color: `${theme.palette.secondary.main}` }} />
               </IconButton>
             </Tooltip>

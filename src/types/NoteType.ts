@@ -1,7 +1,7 @@
 interface NoteType {
   id?: any;
-  description: string;
-  detailing: string;
+  _description: string;
+  _detailing: string;
 }
 
 export default NoteType;

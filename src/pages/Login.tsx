@@ -32,7 +32,8 @@ const Login: React.FC = () => {
       }
       let { data } = await apiPost("/login", { email, password });
 
-      let userId = data.id;
+      console.log(data.data.id);
+      let userId = data.data.id;
       localStorage.setItem("userId", userId);
       navigate("/pagina-recados");
     } catch (error) {

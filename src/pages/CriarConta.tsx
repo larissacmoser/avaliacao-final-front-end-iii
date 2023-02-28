@@ -41,8 +41,9 @@ const CriarConta: React.FC = () => {
     }
 
     try {
-      await apiPost("/", { email, password });
+      let response = await apiPost("/create", { email, password });
       navigate("/");
+      return response;
     } catch (error) {
       console.log(error);
     }
